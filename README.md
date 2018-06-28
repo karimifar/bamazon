@@ -16,9 +16,10 @@ This is an Amazon-like command line project. It allows customer place order, pri
     * Customer can hit "control + c"  to exit the program at any time or wait until a purchase is done.
 
 
-![alt text](https://raw.github.com/karimifar/bamazon/master/a.gif)
 
-![alt text](b.gif?raw=true)
+![screenshot](a.gif?raw=true)
+
+![screenshot](b.gif?raw=true)
 
 
 ### Built With  
