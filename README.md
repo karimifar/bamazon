@@ -15,8 +15,8 @@ This is an Amazon-like command line project. It allows customer place order, pri
     * If the product's quantity is not enough, it will say "Insufficient quantity!".
     * Customer can hit "control + c"  to exit the program at any time or wait until a purchase is done.
 
-![alt text](https://raw.githubusercontent.com/karimifar/bamazon/master/path/to/a.gif)
-![alt text](https://raw.githubusercontent.com/karimifar/bamazon/master/path/to/b.gif)
+!(a.gif?raw=true)
+!(b.gif?raw=true)
 
 
 ### Built With  
