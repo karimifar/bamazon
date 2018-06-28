@@ -10,20 +10,14 @@ var connection = mysql.createConnection({
     database: "bamazon"
 });
 
+var allIds = [];
+
 connection.connect(function(err){
     if (err) throw err;
     setTimeout(start, 500);
 })
 
-// function getList(){
-//     connection.query("SELECT * FROM products", function(err, res) {
-//         if (err) throw err;
-//         console.log("\nThis is the list of our products today! The first number is the product id!")
-//         for(var i=0; i<res.length; i++){
-//             console.log(res[i].item_id + divider + res[i].product_name + divider + "$"+res[i].price )
-//         }
-//     });
-// }
+
 function start(){
 
     inquirer.prompt([{
@@ -31,7 +25,7 @@ function start(){
             type: "input",
             message: "Which product do you want to buy? (enter ID)",
             validate: function(value) {
-                if (isNaN(value) === false) {
+                if (isNaN(value) === false && allIds.indexOf(parseInt(value)) != -1) {
                   return true;
                 }
                 return false;
@@ -60,13 +54,13 @@ function start(){
             var prodPrice = res[0].price;
             var total = prodPrice * wantedQuant;
             if(wantedQuant > stockQuant){
-                console.log("Insufficient quantity! we only have "+ stockQuant +" of " + theThing + " in our stock" );
+                console.log("=================\n\nInsufficient quantity! we only have "+ stockQuant +" of " + theThing + " in our stock\n\n=================" );
                 endPrompt();
             }else{
                 var leftQuant = stockQuant - wantedQuant;
                 connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [leftQuant, prodId], function(err, res){
                     if (err) throw err;
-                    console.log( "=================\n\nYour "+ theThing +" purchase was successful!!\n---\nYour total is: $" + total + "\n==================" )
+                    console.log( "=================\n\nYour "+ theThing +" purchase was successful!!\n---\nYour total is: $" + total + "\n\n==================" )
                     endPrompt();
                 })
             }
@@ -82,7 +76,7 @@ function endPrompt(){
         choices: ["Quit", "Purchase another item"]
     }).then(function(answer){
         if (answer.dowhat === "Quit"){
-            console.log("\n\nOkay Bye!!!\n\n")
+            console.log("=================\n\nOkay Bye!!!\n\n=================")
             process.exit()
         }else{
             getList();
@@ -93,11 +87,12 @@ function endPrompt(){
 function getList(){
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
-        productList = "\nThis is the list of our products today! (the first number is the product id)\n\n"
+        productList = "=================\n\nThis is the list of our products today! (the first number is the product id)\n"
         for(var i=0; i<res.length; i++){
-            productList +=  res[i].item_id + divider + res[i].product_name + divider + "$"+res[i].price + "\n";
+            productList +=  res[i].item_id + divider + res[i].product_name + divider + "$"+parseFloat(res[i].price) + "\n";
+            allIds.push(res[i].item_id)
         }
-        console.log(productList)
+        console.log(productList+"\n=================")
     });
 }
 
